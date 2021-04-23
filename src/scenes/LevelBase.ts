@@ -325,12 +325,12 @@ export default class LevelBase extends Scene {
       existingCornLists,
     } = this;
 
-    // pompom overlaps with brownland
+    // when pompom overlaps with brownland
     physics.add.overlap(pompom, brownland, (pompom, brownland) => {
       this.hasEnteredBrownland = true;
     });
 
-    // pompom overlaps with corn
+    // when pompom overlaps with corn
     physics.add.overlap(pompom, existingCornLists, (pompom, corn) => {
       const { currentCarryingIndex, currentCarryingCorn } = this;
 
