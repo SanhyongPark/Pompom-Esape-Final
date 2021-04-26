@@ -9,21 +9,21 @@ import {
   BROWNLAND_OFFSET_Y,
 } from "../config";
 
-// 被吃掉的 玉米索引
+// navigate how many corns are eaten
 export const eatenCornLists: number[] = [];
 
 export default class LevelBase extends Scene {
-  // 下一个 场景名称
+  // next scene
   nextSceneName = "LevelOne";
-  // 空格键 是否被按下
+  // check if space key is pressed
   spaceKeyPressed = false;
-  // 当前携带 玉米
+  // current carrying corn
   currentCarryingCorn: GameObjects.Image | null = null;
-  // 当前携带 玉米索引
+  // current carrying index
   currentCarryingIndex = -1;
-  // 小鸡是否已经进入过棕地
+  // check if pompom overlap with brownland
   hasEnteredBrownland = false;
-  // 现存玉米列表
+  // existing corn list
   existingCornLists: Types.Physics.Arcade.ImageWithDynamicBody[] = [];
 
   cursor: Types.Input.Keyboard.CursorKeys;
@@ -31,6 +31,7 @@ export default class LevelBase extends Scene {
   fenceGroup: Physics.Arcade.StaticGroup;
   farmer: Types.Physics.Arcade.SpriteWithDynamicBody;
   pom: Types.Physics.Arcade.SpriteWithDynamicBody;
+  //BACKGROUND_MUSIC: Phaser.Sound.BaseSound;
 
   create() {
     const { scene, nextSceneName } = this;
@@ -325,16 +326,16 @@ export default class LevelBase extends Scene {
       existingCornLists,
     } = this;
 
-    // 小鸡 碰到 棕地
+    // when pompom overlaps with brownland
     physics.add.overlap(pom, brownland, () => {
       this.hasEnteredBrownland = true;
     });
 
-    // 小鸡 碰到 玉米
+    // when pompom overlaps with corn
     physics.add.overlap(pom, existingCornLists, (pom, corn) => {
       const { currentCarryingIndex, currentCarryingCorn } = this;
 
-      // 已经携带了玉米，则不能再携带，直接返回
+      // pompom can only carry one corn at a time
       if (~currentCarryingIndex || currentCarryingCorn) return;
 
       corn.destroy();
@@ -343,11 +344,11 @@ export default class LevelBase extends Scene {
       this.currentCarryingIndex = corn.index;
     });
 
-    // 小鸡 碰到 栅栏
+    // when pompom collides with fence
     physics.add.collider(pom, fenceGroup, () => {
       const { currentCarryingIndex, currentCarryingCorn, nextSceneName } = this;
 
-      // 如果没有携带玉米，碰到栅栏无效，不做处理
+      // When pompom is not carrying a corn, her collision with the fence doesn't count
       if (!~currentCarryingIndex || !currentCarryingCorn) return;
 
       currentCarryingCorn.destroy();
@@ -369,11 +370,14 @@ export default class LevelBase extends Scene {
       }
     });
 
-    // 小鸡 碰到 农夫
+    // When pompom overlaps with farmer, send alert 'Pompom is caught!'
     physics.add.overlap(pom, farmer, () => {
-      alert("小鸡被抓了");
+      alert("Pompom is caught!");
       scene.restart();
     });
+
+  //   this.BACKGROUND_MUSIC = this.sound.add("background_music");
+  //   this.BACKGROUND_MUSIC.play();
   }
 
   resetDataStatus() {
