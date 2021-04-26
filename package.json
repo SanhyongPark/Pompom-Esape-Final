@@ -5,8 +5,7 @@
   "scripts": {
     "serve": "parcel serve src/index.html --no-cache -p 9999",
     "start": "rm -rf dist && npm run serve",
-    "build": "parcel build src/index.html --cache-dir node_modules/.cache --out-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "parcel build src/index.html --cache-dir node_modules/.cache --out-dir dist"
   },
   "license": "MIT",
   "devDependencies": {
