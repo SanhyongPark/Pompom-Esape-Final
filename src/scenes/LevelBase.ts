@@ -335,9 +335,10 @@ export default class LevelBase extends Scene {
 
     // when pompom overlaps with brownland
     physics.add.overlap(pom, brownland, () => {
-      this.alarm.play();
+      if (!this.alarm.isPlaying) {
+        this.alarm.play();
+      }
       this.hasEnteredBrownland = true;
-
     });
 
     // when pompom overlaps with corn
@@ -387,8 +388,8 @@ export default class LevelBase extends Scene {
       scene.restart();
     });
 
-  //   this.BACKGROUND_MUSIC = this.sound.add("background_music");
-  //   this.BACKGROUND_MUSIC.play();
+    //   this.BACKGROUND_MUSIC = this.sound.add("background_music");
+    //   this.BACKGROUND_MUSIC.play();
   }
 
   resetDataStatus() {

@@ -1,21 +1,21 @@
 //import { Scene } from 'phaser';
 
-import LevelBase from './LevelBase'
+import LevelBase from "./LevelBase";
 
 export default class LevelThree extends LevelBase {
   constructor() {
-    super('LevelThree')
+    super("LevelThree");
 
-    this.nextSceneName = ''
+    this.nextSceneName = "";
   }
 
-  init () {
-    this.resetDataStatus()
-    console.log('LevelThree inited')
+  init() {
+    this.resetDataStatus();
+    console.log("LevelThree inited");
   }
 
   create() {
-    super.create()
-    console.log('LevelThree created')
+    super.create();
+    console.log("LevelThree created");
   }
 }

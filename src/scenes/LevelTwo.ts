@@ -1,23 +1,22 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
-import LevelBase from './LevelBase'
+import LevelBase from "./LevelBase";
 
 export default class LevelTwo extends LevelBase {
-  background_music: Phaser.Sound.BaseSound
+  background_music: Phaser.Sound.BaseSound;
   constructor() {
-    super('LevelTwo')
+    super("LevelTwo");
 
-    this.nextSceneName = 'LevelThree'
+    this.nextSceneName = "LevelThree";
   }
 
-  init () {
-    this.resetDataStatus()
-    console.log('LevelTwo inited')
+  init() {
+    this.resetDataStatus();
+    console.log("LevelTwo inited");
   }
 
   create() {
-
-    super.create()
-    console.log('LevelTwo created')
+    super.create();
+    console.log("LevelTwo created");
   }
 }
