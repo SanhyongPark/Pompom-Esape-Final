@@ -39,8 +39,11 @@ export default class PreloadResource extends Scene {
       "assets/healthbar/healthbar.json"
     );
 
-    //audio
-    this.load.audio("background_music", "assets/sound/background.mp3");
+    // audio
+    this.load.audio("background_music", "assets/audio/background.ogg");
+    this.load.audio("pick", "assets/audio/pick.mp3");
+    this.load.audio("caught", "assets/audio/caught.mp3");
+    this.load.audio("alarm", "assets/audio/alarm.wav");
   }
 
   create() {

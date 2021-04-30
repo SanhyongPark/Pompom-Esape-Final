@@ -1,5 +1,5 @@
 import { Scene, Types, Physics, GameObjects } from "phaser";
-
+import Phaser from "phaser";
 import {
   LEVEL_COUNT,
   POM_SPEED,
@@ -31,7 +31,10 @@ export default class LevelBase extends Scene {
   fenceGroup: Physics.Arcade.StaticGroup;
   farmer: Types.Physics.Arcade.SpriteWithDynamicBody;
   pom: Types.Physics.Arcade.SpriteWithDynamicBody;
-  //BACKGROUND_MUSIC: Phaser.Sound.BaseSound;
+  pick: Phaser.Sound.BaseSound;
+  caught: any;
+  alarm: Phaser.Sound.BaseSound;
+  background_music: any;
 
   create() {
     const { scene, nextSceneName } = this;
@@ -50,6 +53,10 @@ export default class LevelBase extends Scene {
     this.drawHealthBar();
 
     this.checkCollision();
+
+    this.pick = this.sound.add("pick", { loop: false });
+    this.caught = this.sound.add("caught", { loop: false });
+    this.alarm = this.sound.add("alarm", { loop: true });
 
     // @ts-expect-error
     window.scene = this;
@@ -328,12 +335,15 @@ export default class LevelBase extends Scene {
 
     // when pompom overlaps with brownland
     physics.add.overlap(pom, brownland, () => {
+      this.alarm.play();
       this.hasEnteredBrownland = true;
+
     });
 
     // when pompom overlaps with corn
     physics.add.overlap(pom, existingCornLists, (pom, corn) => {
       const { currentCarryingIndex, currentCarryingCorn } = this;
+      this.pick.play();
 
       // pompom can only carry one corn at a time
       if (~currentCarryingIndex || currentCarryingCorn) return;
@@ -372,7 +382,8 @@ export default class LevelBase extends Scene {
 
     // When pompom overlaps with farmer, send alert 'Pompom is caught!'
     physics.add.overlap(pom, farmer, () => {
-      alert("Pompom is caught!");
+      this.caught.play();
+      alert("小鸡被抓了");
       scene.restart();
     });
 
@@ -385,5 +396,6 @@ export default class LevelBase extends Scene {
     this.currentCarryingCorn = null;
     this.currentCarryingIndex = -1;
     this.hasEnteredBrownland = false;
+    this.game.sound.stopAll();
   }
 }
