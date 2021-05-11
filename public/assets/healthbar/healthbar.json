@@ -1,0 +1,82 @@
+{
+	"textures": [
+		{
+			"image": "healthbar.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 168,
+				"h": 14
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "healthbar-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 8,
+						"w": 56,
+						"h": 14
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 14
+					}
+				},
+				{
+					"filename": "healthbar-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 7,
+						"w": 56,
+						"h": 14
+					},
+					"frame": {
+						"x": 56,
+						"y": 0,
+						"w": 56,
+						"h": 14
+					}
+				},
+				{
+					"filename": "healthbar-3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 7,
+						"w": 56,
+						"h": 14
+					},
+					"frame": {
+						"x": 112,
+						"y": 0,
+						"w": 56,
+						"h": 14
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.6"
+	}
+}

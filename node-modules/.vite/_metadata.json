@@ -1,0 +1,11 @@
+{
+  "hash": "09c6c347",
+  "browserHash": "4bef2f31",
+  "optimized": {
+    "phaser": {
+      "file": "/Users/poshanxin/Desktop/phaser-corn 1/node_modules/.vite/phaser.js",
+      "src": "/Users/poshanxin/Desktop/phaser-corn 1/node_modules/phaser/dist/phaser.js",
+      "needsInterop": true
+    }
+  }
+}
