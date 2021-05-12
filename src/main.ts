@@ -27,7 +27,5 @@ class MainGame extends Game {
 }
 
 const mainGame = new MainGame(GAME_CONFIG);
-// @ts-expect-error
-window.mainGame = mainGame;
 
 export default mainGame;

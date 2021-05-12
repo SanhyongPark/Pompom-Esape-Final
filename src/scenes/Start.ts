@@ -39,7 +39,7 @@ export default class Start extends Scene {
       cancelable: true
     } );
 
-    // Target can be any Element or other EventTarget.
+    // Target can be any Element or other EventTarget
     document.body.dispatchEvent( event );
   }
 }

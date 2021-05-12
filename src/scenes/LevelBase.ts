@@ -1,4 +1,11 @@
-import { Scene, Types, Sound, Physics, GameObjects, Math as PMath } from "phaser";
+import {
+  Scene,
+  Types,
+  Sound,
+  Physics,
+  GameObjects,
+  Math as PMath,
+} from "phaser";
 
 import {
   LEVEL_COUNT,
@@ -13,18 +20,23 @@ export interface ISceneData {
   isPassed?: boolean;
 }
 
+export interface IImageWithDynamicBody
+  extends Types.Physics.Arcade.ImageWithDynamicBody {
+  index: number;
+}
+
 // Navigate how many corns are eaten
 export const eatenCornLists: number[] = [];
 
 export default class LevelBase extends Scene {
   // Next scene
   nextSceneName = "LevelOne";
-  currentLevel = 1
+  currentLevel = 1;
   pomSpeed = POM_SPEED;
   farmerSpeed = FARMER_SPEED;
-  cornSoilGap = CORN_SOIL_GAP
-  cornTotalCount = CORN_TOTAL_COUNT
-  firstCornOffsetX = 0
+  cornSoilGap = CORN_SOIL_GAP;
+  cornTotalCount = CORN_TOTAL_COUNT;
+  firstCornOffsetX = 0;
 
   // Check if space key is pressed
   spaceKeyPressed = false;
@@ -35,8 +47,8 @@ export default class LevelBase extends Scene {
   // Check if pompom overlap with brownland
   hasEnteredBrownland = false;
   // Existing corn list
-  existingCornLists: Types.Physics.Arcade.ImageWithDynamicBody[] = [];
-  eatenCornLists: number[] = []
+  existingCornLists: IImageWithDynamicBody[] = [];
+  eatenCornLists: number[] = [];
 
   cursor: Types.Input.Keyboard.CursorKeys;
   brownland: Types.Physics.Arcade.ImageWithDynamicBody;
@@ -51,7 +63,7 @@ export default class LevelBase extends Scene {
   winSound: Sound.BaseSound;
 
   init(sceneData: ISceneData = {}) {
-    console.log(sceneData, sceneData.isPassed !== false)
+    console.log(sceneData, sceneData.isPassed !== false);
 
     this.loadMusicResource();
   }
@@ -73,11 +85,6 @@ export default class LevelBase extends Scene {
     this.drawHealthBar();
 
     this.checkCollision();
-
-    // @ts-expect-error
-    window.scene = this;
-    // @ts-expect-error
-    window.Scene = Scene;
   }
 
   update() {
@@ -91,7 +98,7 @@ export default class LevelBase extends Scene {
       currentCarryingIndex,
       hasEnteredBrownland,
       farmerSpeed,
-      pomSpeed
+      pomSpeed,
     } = this;
 
     if (cursor.space.isDown) {
@@ -126,15 +133,16 @@ export default class LevelBase extends Scene {
       pom.anims.pause();
     }
 
-    if ( ~currentCarryingIndex || hasEnteredBrownland ) {
-      const angle = PMath.Angle.Between( pom.x, pom.y, farmer.x, farmer.y )
-      let direction = 'front'
+    if (~currentCarryingIndex || hasEnteredBrownland) {
+      const angle = PMath.Angle.Between(pom.x, pom.y, farmer.x, farmer.y);
+      let direction = "front";
 
-      if (Math.abs(angle) > Math.PI *3/4)direction='right'
-      else if (Math.abs(angle) < Math.PI / 4 )direction='left'
-      else if ( angle >= Math.PI / 4 && angle <= Math.PI * 3 / 4 ) direction = 'back'
+      if (Math.abs(angle) > (Math.PI * 3) / 4) direction = "right";
+      else if (Math.abs(angle) < Math.PI / 4) direction = "left";
+      else if (angle >= Math.PI / 4 && angle <= (Math.PI * 3) / 4)
+        direction = "back";
 
-      const _farmer = farmer.anims.play( `farmer-${direction}`, true )
+      const _farmer = farmer.anims.play(`farmer-${direction}`, true);
 
       physics.moveToObject(_farmer, pom, farmerSpeed);
     }
@@ -192,17 +200,24 @@ export default class LevelBase extends Scene {
   }
 
   drawSoilAndCron() {
-    const { physics, cornTotalCount, cornSoilGap, eatenCornLists,firstCornOffsetX } = this;
+    const {
+      physics,
+      cornTotalCount,
+      cornSoilGap,
+      eatenCornLists,
+      firstCornOffsetX,
+    } = this;
     const {
       world: {
         bounds: { centerY },
       },
     } = physics;
 
-    const existingCornLists: Types.Physics.Arcade.ImageWithDynamicBody[] = [];
+    const existingCornLists: IImageWithDynamicBody[] = [];
 
     Array.from({ length: cornTotalCount }).forEach((_item, index) => {
-      const x = 150 + firstCornOffsetX + cornSoilGap + (100 + cornSoilGap) * index;
+      const x =
+        150 + firstCornOffsetX + cornSoilGap + (100 + cornSoilGap) * index;
 
       this.add.image(x, centerY + BROWNLAND_OFFSET_Y, "soil").setOrigin(0, 0.5);
 
@@ -210,9 +225,9 @@ export default class LevelBase extends Scene {
 
       const corn = physics.add
         .image(x + 45, centerY + BROWNLAND_OFFSET_Y, "corn")
-        .setOrigin( 0, 0.5 )
-        .setScale(0.78)
-      // @ts-expect-error
+        .setOrigin(0, 0.5)
+        .setScale(0.78);
+
       corn.index = index;
 
       existingCornLists.push(corn);
@@ -230,6 +245,7 @@ export default class LevelBase extends Scene {
 
     farmer.setCollideWorldBounds(true);
 
+    // Farmer chasing animation
     anims.create({
       key: "farmer-front",
       frames: anims.generateFrameNumbers("farmer", { start: 0, end: 3 }),
@@ -273,6 +289,7 @@ export default class LevelBase extends Scene {
 
     pom.setCollideWorldBounds(true);
 
+    // Pompom jumping animation
     anims.create({
       key: "pompom-front",
       frames: anims.generateFrameNumbers("pompom", { start: 2, end: 3 }),
@@ -332,6 +349,7 @@ export default class LevelBase extends Scene {
     });
   }
 
+  // Pompom carry corns
   drawCarryingCorn(isMoving = true) {
     const { pom, currentCarryingCorn } = this;
     const { x, y } = pom;
@@ -344,6 +362,7 @@ export default class LevelBase extends Scene {
       return;
     }
 
+    // Set current carrying corn angle and scale
     if (isMoving) return;
 
     const _currentCarryingCorn = this.add.image(x, _y, "corn");
@@ -354,13 +373,13 @@ export default class LevelBase extends Scene {
 
   loadMusicResource(autoPlay = true) {
     this.backgroundSound = this.sound.add("background-music", { loop: true });
-    this.alarmSound = this.sound.add( "alarm", { loop: true } );
+    this.alarmSound = this.sound.add("alarm", { loop: true });
 
     this.pickSound = this.sound.add("pick", { loop: false });
     this.caughtSound = this.sound.add("caught", { loop: false });
     this.winSound = this.sound.add("win", { loop: false });
 
-    if (!autoPlay) return
+    if (!autoPlay) return;
 
     this.backgroundSound.play();
   }
@@ -379,7 +398,7 @@ export default class LevelBase extends Scene {
       alarmSound,
       pickSound,
       caughtSound,
-      winSound
+      winSound,
     } = this;
 
     // When pompom overlaps with brownland
@@ -397,19 +416,25 @@ export default class LevelBase extends Scene {
       const { currentCarryingIndex, currentCarryingCorn } = this;
 
       // Pompom can only carry one corn at a time
-      if ( ~currentCarryingIndex || currentCarryingCorn ) return;
+      if (~currentCarryingIndex || currentCarryingCorn) return;
 
       pickSound.play();
 
       corn.destroy();
       this.drawCarryingCorn(false);
-      // @ts-expect-error
+
       this.currentCarryingIndex = corn.index;
     });
 
     // When pompom collides with fence
     physics.add.collider(pom, fenceGroup, () => {
-      const { currentCarryingIndex, currentCarryingCorn, eatenCornLists, nextSceneName, cornTotalCount } = this;
+      const {
+        currentCarryingIndex,
+        currentCarryingCorn,
+        eatenCornLists,
+        nextSceneName,
+        cornTotalCount,
+      } = this;
 
       // When pompom is not carrying a corn, her collision with the fence doesn't count
       if (!~currentCarryingIndex || !currentCarryingCorn) return;
@@ -422,7 +447,7 @@ export default class LevelBase extends Scene {
       if (eatenCornLists.length !== cornTotalCount) {
         scene.restart({ isPassed: false });
 
-        return
+        return;
       }
 
       if (nextSceneName) {
@@ -431,10 +456,10 @@ export default class LevelBase extends Scene {
         this.drawHealthBar();
 
         setTimeout(() => {
-          alert( "Congratulations!" )
+          alert("Congratulations!");
 
-          sound.stopAll()
-          scene.stop().switch( 'Start' )
+          sound.stopAll();
+          scene.stop().switch("Start");
         }, 0);
 
         alarmSound.stop();
@@ -453,19 +478,19 @@ export default class LevelBase extends Scene {
     });
   }
 
-  resetDataStatus ( isPassed = true ) {
-    const { sound, backgroundSound } = this
+  resetDataStatus(isPassed = true) {
+    const { sound, backgroundSound } = this;
 
     sound.stopAll();
-    backgroundSound.play()
+    backgroundSound.play();
 
     this.spaceKeyPressed = false;
     this.currentCarryingCorn = null;
     this.currentCarryingIndex = -1;
     this.hasEnteredBrownland = false;
 
-    if ( !isPassed ) return
+    if (!isPassed) return;
 
-    this.eatenCornLists = []
+    this.eatenCornLists = [];
   }
 }

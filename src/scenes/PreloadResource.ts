@@ -11,12 +11,16 @@ import {
 
 export default class PreloadResource extends Scene {
   preload() {
+    // Game start page
     this.load.image("start-background", "assets/start-background.png");
 
+    // Game start button
     this.load.image("start-button", "assets/start-button.png");
 
+    // Game background
     this.load.image("background", "assets/background.png");
 
+    // Corn farmland
     this.load.image("brownland", "assets/brownland.png");
 
     this.load.image("soil", "assets/soil.png");
@@ -24,7 +28,7 @@ export default class PreloadResource extends Scene {
     this.load.image("corn", "assets/corn.png");
 
     this.load.image("bar", "assets/bar.png");
-    
+
     this.load.image("fence", "assets/fence.png");
 
     this.load.spritesheet("pompom", "assets/pompom.png", {
@@ -48,7 +52,7 @@ export default class PreloadResource extends Scene {
       "assets/healthbar/healthbar.json"
     );
 
-    // audio
+    // Audio
     this.load.audio("background-music", "assets/audio/background.ogg");
     this.load.audio("alarm", "assets/audio/alarm.wav");
     this.load.audio("pick", "assets/audio/pick.mp3");
@@ -58,8 +62,5 @@ export default class PreloadResource extends Scene {
 
   create() {
     this.scene.stop().start("Start");
-    // this.scene.stop().start("LevelOne", { isPassed: true });
-    // this.scene.stop().start("LevelTwo", { isPassed: true });
-    // this.scene.stop().start("LevelThree", { isPassed: true });
   }
 }

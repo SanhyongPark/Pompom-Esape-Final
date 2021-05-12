@@ -23,7 +23,7 @@ export const POM_SPRITE_WIDTH = 80;
 export const POM_SPRITE_HEIGHT = 120;
 
 // Farmer frame size and speed
-export var FARMER_SPEED = 120;
+export var FARMER_SPEED = 80;
 export const FARMER_SPRITE_WIDTH = 84;
 export const FARMER_SPRITE_HEIGHT = 98;
 
