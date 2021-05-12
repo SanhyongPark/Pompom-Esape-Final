@@ -401,7 +401,7 @@ export default class LevelBase extends Scene {
       winSound,
     } = this;
 
-    // When pompom overlaps with brownland
+    // When pompom overlaps with brownland, alarm sound play
     physics.add.overlap(pom, brownland, () => {
       if (!alarmSound.isPlaying) {
         alarmSound.play();
@@ -411,7 +411,7 @@ export default class LevelBase extends Scene {
       this.hasEnteredBrownland = true;
     });
 
-    // When pompom overlaps with corn
+    // When pompom overlaps with corn, they move together, and pick sound will play
     physics.add.overlap(pom, existingCornLists, (_pom, corn) => {
       const { currentCarryingIndex, currentCarryingCorn } = this;
 
