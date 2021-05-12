@@ -245,7 +245,7 @@ export default class LevelBase extends Scene {
 
     farmer.setCollideWorldBounds(true);
 
-    // Farmer chasing animation
+    // Farmer chasing pompom animation
     anims.create({
       key: "farmer-front",
       frames: anims.generateFrameNumbers("farmer", { start: 0, end: 3 }),
@@ -401,7 +401,7 @@ export default class LevelBase extends Scene {
       winSound,
     } = this;
 
-    // When pompom overlaps with brownland, alarm sound play
+    // When pompom overlaps with brownland, alarm sound plays
     physics.add.overlap(pom, brownland, () => {
       if (!alarmSound.isPlaying) {
         alarmSound.play();
